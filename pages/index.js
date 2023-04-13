@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "../styles/Home.module.css";
-import { Box, Button, Spacer } from "@chakra-ui/react";
+import { Box, Button, Input, Spacer } from "@chakra-ui/react";
 import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,47 +16,61 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Box backgroundColor={"gray.100"}>
+        <Box fontFamily={"Inter"} className="top-menu-bar" textAlign={"right"}>
+          <Box
+            textColor={"white"}
+            pr={"7%"}
+            pt={"1"}
+            pb={"1"}
+            bgColor={"#DE3450"}
+          >
+            Call: 9825319866
+          </Box>
+        </Box>
 
-      <Box fontFamily={"Inter"} className="top-menu-bar" textAlign={"right"}>
         <Box
-          textColor={"white"}
-          pr={"7%"}
-          pt={"1"}
-          pb={"1"}
-          bgColor={"#DE3450"}
+          className="main-menu-bar"
+          fontFamily={"Inter"}
+          display={"flex"}
+          bgColor={"white"}
+          paddingLeft={"7%"}
+          paddingRight={"7%"}
+          paddingTop={"8"}
+          paddingBottom={"8"}
+          fontWeight={"medium"}
         >
-          Call: 9825319866
+          <Box>
+            <Image src={"/logo.jpg"} width={"200"} height={"200"}></Image>
+          </Box>
+          <Spacer />
+          <Box display={"flex"} gap={"12"} alignItems={"center"}>
+            <Link href={"/"}>Home</Link>
+            <Link href={"/"}>Contact</Link>
+            <Link href={"/"}>About Us</Link>
+            <Link href={"/"}>Vehicles</Link>
+
+            <Button variant={"outline"} colorScheme="red">
+              <Link href={"/"}>Login</Link>
+            </Button>
+
+            <Button colorScheme="red">
+              <Link href={"/"}>Book Now</Link>
+            </Button>
+          </Box>
         </Box>
-      </Box>
 
-      <Box
-        className="main-menu-bar"
-        fontFamily={"Inter"}
-        display={"flex"}
-        bgColor={"white"}
-        paddingLeft={"7%"}
-        paddingRight={"7%"}
-        paddingTop={"8"}
-        paddingBottom={"8"}
-        fontWeight={"medium"}
-      >
-        <Box>
-          <Image src={"/logo.jpg"} width={"200"} height={"200"}></Image>
-        </Box>
-        <Spacer />
-        <Box display={"flex"} gap={"12"} alignItems={"center"}>
-          <Link href={"/"}>Home</Link>
-          <Link href={"/"}>Contact</Link>
-          <Link href={"/"}>About Us</Link>
-          <Link href={"/"}>Vehicles</Link>
-
-          <Button variant={"outline"} colorScheme="red">
-            <Link href={"/"}>Login</Link>
-          </Button>
-
-          <Button colorScheme="red">
-            <Link href={"/"}>Book Now</Link>
-          </Button>
+        <Box className="hero-section" display={"flex"} pl={"7%"} pr={"7%"}>
+          <Box width={"50%"}>
+            <form>
+              <Input placeholder="Select destination"></Input>
+              <Input placeholder="Type date"></Input>
+              <Input placeholder="Select Vehicle Type"></Input>
+            </form>
+          </Box>
+          <Box width={"50%"} display={"flex"} justifyContent={"center"}>
+            <Image src={"/car.png"} height={"300"} width={"300"}></Image>
+          </Box>
         </Box>
       </Box>
     </>
