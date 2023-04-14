@@ -2,9 +2,21 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "../styles/Home.module.css";
-import { Box, Button, Input, Spacer } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
 import Link from "next/link";
-
+import { MdLocationPin } from "react-icons/md";
+import { BsCalendar2DateFill } from "react-icons/bs";
+import { FaCar } from "react-icons/fa";
+import CarCard from "../components/CarCard";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
@@ -60,19 +72,94 @@ export default function Home() {
           </Box>
         </Box>
 
-        <Box className="hero-section" display={"flex"} pl={"7%"} pr={"7%"}>
+        <Box
+          className="hero-section"
+          height={"650"}
+          display={"flex"}
+          pl={"7%"}
+          pr={"7%"}
+          alignItems={"center"}
+        >
           <Box width={"50%"}>
+            <Text
+              fontFamily={"Inter"}
+              fontSize={"3xl"}
+              fontWeight={"bold"}
+              textColor={"#373737"}
+            >
+              Where Do You Want To Go Today?
+            </Text>
+            <br></br>
             <form>
-              <Input placeholder="Select destination"></Input>
-              <Input placeholder="Type date"></Input>
-              <Input placeholder="Select Vehicle Type"></Input>
+              <Box
+                fontFamily={"Inter"}
+                display={"flex"}
+                flexDir={"column"}
+                gap={"5"}
+                width={"70%"}
+              >
+                <InputGroup>
+                  <InputLeftAddon
+                    bgColor={"red"}
+                    children={<MdLocationPin color="white" />}
+                  ></InputLeftAddon>
+                  <Input
+                    bgColor={"white"}
+                    placeholder="Select destination"
+                  ></Input>
+                </InputGroup>
+
+                <InputGroup>
+                  <InputLeftAddon
+                    bgColor={"red"}
+                    color={"white"}
+                    children={<BsCalendar2DateFill></BsCalendar2DateFill>}
+                  ></InputLeftAddon>
+                  <Input bgColor={"white"} placeholder="Type date"></Input>
+                </InputGroup>
+
+                <InputGroup>
+                  <InputLeftAddon
+                    bgColor={"red"}
+                    color={"white"}
+                    children={<FaCar />}
+                  ></InputLeftAddon>
+                  <Input
+                    bgColor={"white"}
+                    placeholder="Select Vehicle Type"
+                  ></Input>
+                </InputGroup>
+
+                <Button colorScheme="red">Confirm Selection</Button>
+              </Box>
             </form>
           </Box>
           <Box width={"50%"} display={"flex"} justifyContent={"center"}>
-            <Image src={"/car.png"} height={"300"} width={"300"}></Image>
+            <Image src={"/car2.png"} height={"2000"} width={"2000"}></Image>
           </Box>
         </Box>
       </Box>
+      <Box
+        marginLeft={"8%"}
+        marginRight={"8%"}
+        marginTop={"16"}
+        marginBottom={"16"}
+        display={"flex"}
+        justifyContent={"space-around"}
+        gap={"16"}
+        flexWrap={"wrap"}
+      >
+        <CarCard image={"/sedan.webp"} title={"Sedan"} />
+        <CarCard image={"/hatchback.png"} title={"Hatchback"} />
+        <CarCard image={"/brezza.png"} title={"SUV(5-seater))"} />
+        <CarCard image={"/suv2.png"} title={"SUV(7-seater)"} />
+        <CarCard image={"/hiace.png"} title={"7+ Seater"} />
+        <CarCard image={"/tesla.png"} title={"Electric"} />
+        <CarCard image={"/rubicon.png"} title={"Off-road"} />
+        <CarCard image={"/scorpio.webp"} title={"Scorpio"} />
+      </Box>
+
+      <Box padding={"10"}></Box>
     </>
   );
 }
