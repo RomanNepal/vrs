@@ -37,7 +37,11 @@ const CarCard = (prop) => {
       </Text>
 
       <Box bgColor={"red"}>
-        <Image src={prop.image} fill objectFit="contain"></Image>
+        {prop.image ? (
+          <Image src={prop.image} fill objectFit="contain"></Image>
+        ) : (
+          ""
+        )}
       </Box>
     </Box>
   );

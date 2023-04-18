@@ -17,9 +17,15 @@ import { MdLocationPin } from "react-icons/md";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { FaCar } from "react-icons/fa";
 import CarCard from "../components/CarCard";
+import { useEffect } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      console.log(position);
+    });
+  }, []);
   return (
     <>
       <Head>
@@ -139,6 +145,15 @@ export default function Home() {
           </Box>
         </Box>
       </Box>
+      <Text
+        fontFamily={"Inter"}
+        fontWeight={"bold"}
+        fontSize={"4xl"}
+        textAlign={"center"}
+        mt={"16"}
+      >
+        Find Vehicles
+      </Text>
       <Box
         marginLeft={"8%"}
         marginRight={"8%"}
@@ -156,7 +171,9 @@ export default function Home() {
         <CarCard image={"/hiace.png"} title={"7+ Seater"} />
         <CarCard image={"/tesla.png"} title={"Electric"} />
         <CarCard image={"/rubicon.png"} title={"Off-road"} />
-        <CarCard image={"/scorpio.webp"} title={"Scorpio"} />
+        <Link href={"/"}>
+          <CarCard title={"+ See All"} />
+        </Link>
       </Box>
 
       <Box padding={"10"}></Box>
