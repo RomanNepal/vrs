@@ -18,14 +18,15 @@ import { BsCalendar2DateFill } from "react-icons/bs";
 import { FaCar } from "react-icons/fa";
 import CarCard from "../components/CarCard";
 import { useEffect } from "react";
+import Navbar from "../components/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      console.log(position);
-    });
-  }, []);
+  // useEffect(() => {
+  //   navigator.geolocation.getCurrentPosition(function (position) {
+  //     console.log(position);
+  //   });
+  // }, []);
   return (
     <>
       <Head>
@@ -35,48 +36,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box backgroundColor={"gray.100"}>
-        <Box fontFamily={"Inter"} className="top-menu-bar" textAlign={"right"}>
-          <Box
-            textColor={"white"}
-            pr={"7%"}
-            pt={"1"}
-            pb={"1"}
-            bgColor={"#DE3450"}
-          >
-            Call: 9825319866
-          </Box>
-        </Box>
-
-        <Box
-          className="main-menu-bar"
-          fontFamily={"Inter"}
-          display={"flex"}
-          bgColor={"white"}
-          paddingLeft={"7%"}
-          paddingRight={"7%"}
-          paddingTop={"8"}
-          paddingBottom={"8"}
-          fontWeight={"medium"}
-        >
-          <Box>
-            <Image src={"/logo.jpg"} width={"200"} height={"200"}></Image>
-          </Box>
-          <Spacer />
-          <Box display={"flex"} gap={"12"} alignItems={"center"}>
-            <Link href={"/"}>Home</Link>
-            <Link href={"/"}>Contact</Link>
-            <Link href={"/"}>About Us</Link>
-            <Link href={"/"}>Vehicles</Link>
-
-            <Button variant={"outline"} colorScheme="red">
-              <Link href={"/"}>Login</Link>
-            </Button>
-
-            <Button colorScheme="red">
-              <Link href={"/"}>Book Now</Link>
-            </Button>
-          </Box>
-        </Box>
+        <Navbar />
 
         <Box
           className="hero-section"
@@ -164,14 +124,29 @@ export default function Home() {
         gap={"16"}
         flexWrap={"wrap"}
       >
-        <CarCard image={"/sedan.webp"} title={"Sedan"} />
-        <CarCard image={"/hatchback.png"} title={"Hatchback"} />
-        <CarCard image={"/brezza.png"} title={"SUV(5-seater))"} />
-        <CarCard image={"/suv2.png"} title={"SUV(7-seater)"} />
-        <CarCard image={"/hiace.png"} title={"7+ Seater"} />
-        <CarCard image={"/tesla.png"} title={"Electric"} />
-        <CarCard image={"/rubicon.png"} title={"Off-road"} />
-        <Link href={"/"}>
+        <Link href={"/search"}>
+          <CarCard image={"/sedan.webp"} title={"Sedan"} />
+        </Link>
+        <Link href={"/search"}>
+          <CarCard image={"/hatchback.png"} title={"Hatchback"} />
+        </Link>
+        <Link href={"/search"}>
+          <CarCard image={"/brezza.png"} title={"SUV(5-seater))"} />
+        </Link>
+        <Link href={"/search"}>
+          <CarCard image={"/suv2.png"} title={"SUV(7-seater)"} />
+        </Link>
+        <Link href={"/search"}>
+          <CarCard image={"/hiace.png"} title={"7+ Seater"} />
+        </Link>
+        <Link href={"/search"}>
+          <CarCard image={"/tesla.png"} title={"Electric"} />
+        </Link>
+
+        <Link href={"/search"}>
+          <CarCard image={"/rubicon.png"} title={"Off-road"} />
+        </Link>
+        <Link href={"/search"}>
           <CarCard title={"+ See All"} />
         </Link>
       </Box>
