@@ -81,7 +81,12 @@ export default function Home() {
                     color={"white"}
                     children={<BsCalendar2DateFill></BsCalendar2DateFill>}
                   ></InputLeftAddon>
-                  <Input bgColor={"white"} placeholder="Type date"></Input>
+                  <Input
+                    type="date"
+                    placeholder="Type date"
+                    color={"gray"}
+                    bgColor={"white"}
+                  ></Input>
                 </InputGroup>
 
                 <InputGroup>
@@ -124,6 +129,7 @@ export default function Home() {
         gap={"16"}
         flexWrap={"wrap"}
       >
+        {/* for commit only */}
         <Link href={"/search"}>
           <CarCard image={"/sedan.webp"} title={"Sedan"} />
         </Link>
