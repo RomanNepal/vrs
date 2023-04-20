@@ -130,6 +130,7 @@ export default function Home() {
         flexWrap={"wrap"}
       >
         {/* for commit only */}
+        {/* again for commit */}
         <Link href={"/search"}>
           <CarCard image={"/sedan.webp"} title={"Sedan"} />
         </Link>
