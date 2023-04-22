@@ -26,6 +26,7 @@ import {
   Tr,
   Th,
 } from "@chakra-ui/react";
+// for commit
 import { RSC_MODULE_TYPES } from "next/dist/shared/lib/constants";
 import Navbar from "../components/Navbar";
 const stars = [1, 2, 3, 4, 5];
