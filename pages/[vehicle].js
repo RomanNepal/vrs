@@ -5,8 +5,6 @@ import "slick-carousel/slick/slick-theme.css";
 import { HiStar } from "react-icons/hi";
 import { BiHeart } from "react-icons/bi";
 import Image from "next/image";
-import { BsFillBasket3Fill, BsTagsFill } from "react-icons/bs";
-import { useRouter } from "next/router";
 import {
   Box,
   Button,
@@ -27,7 +25,7 @@ import {
   Th,
 } from "@chakra-ui/react";
 // for commit
-import { RSC_MODULE_TYPES } from "next/dist/shared/lib/constants";
+
 import Navbar from "../components/Navbar";
 const stars = [1, 2, 3, 4, 5];
 const images = ["/brezza.jpg", "/fortuner.jpg", "/scorpio.jpg", "/verna.jpg"];

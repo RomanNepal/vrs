@@ -12,12 +12,12 @@ import {
 } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { RiMailSendLine } from "react-icons/ri";
-const Footer = () => {
+const Footer = (props) => {
   const router = useRouter();
   const path = router.pathname;
 
   return (
-    <Box display={path === "/admin/login" ? "none" : ""}>
+    <Box display={props.display ? props.display : ""}>
       <Box
         ml={"7%"}
         mr={"7%"}

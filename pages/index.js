@@ -19,6 +19,7 @@ import { FaCar } from "react-icons/fa";
 import CarCard from "../components/CarCard";
 import { useEffect } from "react";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
@@ -159,6 +160,7 @@ export default function Home() {
       </Box>
 
       <Box padding={"10"}></Box>
+      <Footer />
     </>
   );
 }

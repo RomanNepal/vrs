@@ -1,9 +1,9 @@
-import { Box, Button, Spacer } from "@chakra-ui/react";
+import { Avatar, Box, Button, Spacer } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const Navbar = () => {
+const Navbar = ({ loggedIn }) => {
   return (
     <Box position={"sticky"} top={"0"} zIndex={"100"}>
       <Box
@@ -44,9 +44,13 @@ const Navbar = () => {
           <Link href={"/"}>About Us</Link>
           <Link href={"/"}>Vehicles</Link>
           <Link href="/search">Search</Link>
-          <Button variant={"outline"} colorScheme="red">
-            <Link href={"/"}>Login</Link>
-          </Button>
+          {loggedIn ? (
+            <Avatar />
+          ) : (
+            <Button variant={"outline"} colorScheme="red">
+              <Link href={"/login"}>Login</Link>
+            </Button>
+          )}
 
           <Button colorScheme="red">
             <Link href={"/"}>Book Now</Link>
