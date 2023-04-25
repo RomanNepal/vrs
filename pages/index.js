@@ -9,7 +9,6 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
-  Spacer,
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
@@ -18,7 +17,8 @@ import { BsCalendar2DateFill } from "react-icons/bs";
 import { FaCar } from "react-icons/fa";
 import CarCard from "../components/CarCard";
 import { useEffect } from "react";
-import Navbar from "../components/Navbar";
+import dynamic from "next/dynamic";
+const Navbar = dynamic(() => import("../components/Navbar"), { ssr: false });
 import Footer from "../components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 

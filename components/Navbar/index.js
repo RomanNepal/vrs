@@ -1,9 +1,29 @@
-import { Avatar, Box, Button, Spacer } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
+import { FiLogOut } from "react-icons/fi";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../Context/authContext";
+import { useRouter } from "next/router";
 
-const Navbar = ({ loggedIn }) => {
+const Navbar = () => {
+  const router = useRouter();
+  const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
+  const isLoggedIn = loggedInInfo.isLoggedIn;
+  const handleLogout = () => {
+    setLoggedIn(false, "");
+    router.push("/");
+  };
   return (
     <Box position={"sticky"} top={"0"} zIndex={"100"}>
       <Box
@@ -44,8 +64,24 @@ const Navbar = ({ loggedIn }) => {
           <Link href={"/"}>About Us</Link>
           <Link href={"/"}>Vehicles</Link>
           <Link href="/search">Search</Link>
-          {loggedIn ? (
-            <Avatar />
+          {isLoggedIn ? (
+            <Menu>
+              {" "}
+              <MenuButton as={Button} variant={"unstyled"}>
+                <Avatar size={"sm"} />
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Roman Nepal</MenuItem>
+                <MenuItem>
+                  <Button variant={"unstyled"} onClick={handleLogout}>
+                    {" "}
+                    <Box display={"flex"} alignItems={"center"}>
+                      <FiLogOut /> &nbsp; <Text>Logout</Text>
+                    </Box>
+                  </Button>
+                </MenuItem>
+              </MenuList>
+            </Menu>
           ) : (
             <Button variant={"outline"} colorScheme="red">
               <Link href={"/login"}>Login</Link>

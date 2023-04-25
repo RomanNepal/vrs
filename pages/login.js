@@ -7,10 +7,12 @@ import {
   Toast,
   useToast,
 } from "@chakra-ui/react";
+import dynamic from "next/dynamic";
 import React, { useContext, useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
+// import Navbar from "../components/Navbar";
+const Navbar = dynamic(() => import("../components/Navbar"), { ssr: false });
 import axios from "axios";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { url } from "../components/Constants";
 import { AuthContext } from "../components/Context/authContext";
 const Login = () => {
@@ -22,7 +24,11 @@ const Login = () => {
   const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
-    console.log(loggedInInfo);
+    if (loggedInInfo.isLoggedIn) {
+      router.push("/");
+    } else {
+      console.log("not logged in");
+    }
   }, []);
   const handleSubmit = async (e) => {
     try {
@@ -33,7 +39,7 @@ const Login = () => {
         });
 
         setLoggedIn(true, response.data.data.token);
-        
+        router.push("/");
       } else {
         let response = await axios.post(`${url}/auth/send-otp`, {
           phone: phone,

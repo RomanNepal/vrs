@@ -26,7 +26,8 @@ import {
 } from "@chakra-ui/react";
 // for commit
 
-import Navbar from "../components/Navbar";
+import dynamic from "next/dynamic";
+const Navbar = dynamic(() => import("../../components/Navbar"), { ssr: false });
 const stars = [1, 2, 3, 4, 5];
 const images = ["/brezza.jpg", "/fortuner.jpg", "/scorpio.jpg", "/verna.jpg"];
 const Vehicle = () => {

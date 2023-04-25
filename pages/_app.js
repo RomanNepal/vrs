@@ -1,11 +1,15 @@
 import { Box, ChakraProvider } from "@chakra-ui/react";
 import "../styles/globals.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AuthContext } from "../components/Context/authContext";
 
 export default function App({ Component, pageProps }) {
+  let tk = "";
+  if (typeof window != "undefined") {
+    tk = localStorage.getItem("token");
+  }
   const [loggedInInfo, sLogginInInfo] = useState({
-    isLoggedIn: false,
+    isLoggedIn: tk ? true : false,
     token: "",
   });
   const setLoggedIn = (isTrue, token) => {
@@ -14,6 +18,7 @@ export default function App({ Component, pageProps }) {
       localStorage.setItem("token", token);
     } else if (!isTrue && localStorage.getItem("token")) {
       localStorage.removeItem("token");
+      sLogginInInfo({ isLoggedIn: false, token: "" });
     }
   };
   return (
