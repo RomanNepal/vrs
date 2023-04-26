@@ -37,7 +37,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box backgroundColor={"gray.100"}>
-        <Navbar />
+        <Navbar activeIndex={0} />
 
         <Box
           className="hero-section"

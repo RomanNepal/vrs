@@ -21,6 +21,7 @@ export default function App({ Component, pageProps }) {
       sLogginInInfo({ isLoggedIn: false, token: "" });
     }
   };
+
   return (
     <ChakraProvider>
       <AuthContext.Provider value={{ loggedInInfo, setLoggedIn }}>

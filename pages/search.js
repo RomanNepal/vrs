@@ -1,5 +1,6 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import dynamic from "next/dynamic";
+const Navbar = dynamic(() => import("../components/Navbar"), { ssr: false });
 import { Box, Button, Divider, Text } from "@chakra-ui/react";
 import { MdOutlineNavigateNext } from "react-icons/md";
 import Image from "next/image";

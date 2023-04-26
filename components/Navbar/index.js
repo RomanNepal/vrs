@@ -10,13 +10,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FiLogOut } from "react-icons/fi";
+import { ImHome3 } from "react-icons/im";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../Context/authContext";
 import { useRouter } from "next/router";
-
-const Navbar = () => {
+const Navbar = ({ activeIndex }) => {
   const router = useRouter();
   const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
   const isLoggedIn = loggedInInfo.isLoggedIn;
@@ -24,6 +24,7 @@ const Navbar = () => {
     setLoggedIn(false, "");
     router.push("/");
   };
+  // const [activeIndex, setActive] = useState(0);
   return (
     <Box position={"sticky"} top={"0"} zIndex={"100"}>
       <Box
@@ -59,11 +60,46 @@ const Navbar = () => {
         </Box>
         <Spacer />
         <Box display={"flex"} gap={"12"} alignItems={"center"}>
-          <Link href={"/"}>Home</Link>
-          <Link href={"/"}>Contact</Link>
-          <Link href={"/"}>About Us</Link>
-          <Link href={"/"}>Vehicles</Link>
-          <Link href="/search">Search</Link>
+          <Box
+            borderBottom={activeIndex == 0 ? "2px" : "0px"}
+            borderBottomColor={"red"}
+            paddingBottom={"1"}
+          >
+            <Link href={"/"}>
+              <ImHome3 size={"25px"}></ImHome3>
+            </Link>
+          </Box>
+
+          <Box
+            borderBottom={activeIndex == 1 ? "2px" : "0px"}
+            borderBottomColor={"red"}
+            paddingBottom={"1"}
+          >
+            <Link href={"/contact"}>Contact</Link>
+          </Box>
+
+          <Box
+            borderBottom={activeIndex == 2 ? "2px" : "0px"}
+            borderBottomColor={"red"}
+            paddingBottom={"1"}
+          >
+            <Link href={"/"}>About Us</Link>
+          </Box>
+          <Box
+            borderBottom={activeIndex == 3 ? "2px" : "0px"}
+            borderBottomColor={"red"}
+            paddingBottom={"1"}
+          >
+            <Link href={"/"}>Vehicles</Link>
+          </Box>
+
+          <Box
+            borderBottom={activeIndex == 4 ? "2px" : "0px"}
+            borderBottomColor={"red"}
+            paddingBottom={"1"}
+          >
+            <Link href="/search">Search</Link>
+          </Box>
           {isLoggedIn ? (
             <Menu>
               {" "}
