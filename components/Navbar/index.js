@@ -74,6 +74,7 @@ const Navbar = ({ activeIndex }) => {
             borderBottom={activeIndex == 1 ? "2px" : "0px"}
             borderBottomColor={"red"}
             paddingBottom={"1"}
+            _hover={{ borderBottom: "2px" }}
           >
             <Link href={"/contact"}>Contact</Link>
           </Box>

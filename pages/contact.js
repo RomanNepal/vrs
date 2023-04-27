@@ -6,6 +6,7 @@ const Contact = () => {
     <>
       <Navbar activeIndex={1} />
       <>Contact us</>
+      <>Hello</>
     </>
   );
 };
