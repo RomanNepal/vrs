@@ -8,6 +8,7 @@ const Contact = () => {
       <>Contact us</>
       <>Hello</>
       {/* just for commit */}
+      {/* again for commit */}
     </>
   );
 };
