@@ -14,9 +14,6 @@ import {
 // const Stepper = dynamic(() => import("react-form-stepper"), { ssr: false });
 import { Stepper } from "react-form-stepper";
 import { CgProfile } from "react-icons/cg";
-import { BsCheck } from "react-icons/bs";
-import { IoClose } from "react-icons/io";
-import { BiEdit } from "react-icons/bi";
 import { MdOutlineMail } from "react-icons/md";
 import { useRouter } from "next/router";
 import axios from "axios";
