@@ -25,7 +25,7 @@ const Login = () => {
 
   useEffect(() => {
     if (loggedInInfo.isLoggedIn) {
-      router.push("/");
+      router.back();
     } else {
       console.log("not logged in");
     }

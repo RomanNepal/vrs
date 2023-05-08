@@ -108,6 +108,10 @@ const Navbar = ({ activeIndex }) => {
                 <Avatar size={"sm"} />
               </MenuButton>
               <MenuList>
+                <Link href={"/dashboard"}>
+                  {" "}
+                  <MenuItem>Dashboard</MenuItem>
+                </Link>
                 <MenuItem>Roman Nepal</MenuItem>
                 <MenuItem>
                   <Button variant={"unstyled"} onClick={handleLogout}>

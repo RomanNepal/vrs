@@ -10,8 +10,9 @@ export default function App({ Component, pageProps }) {
   }
   const [loggedInInfo, sLogginInInfo] = useState({
     isLoggedIn: tk ? true : false,
-    token: "",
+    token: tk ? tk : "",
   });
+
   const setLoggedIn = (isTrue, token) => {
     if (isTrue) {
       sLogginInInfo({ isLoggedIn: true, token: token });

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { Children, useContext, useEffect } from "react";
 import { AuthContext } from "../Context/authContext";
 import { useRouter } from "next/router";
 import Login from "../../pages/login";
@@ -6,13 +6,10 @@ import Login from "../../pages/login";
 const ProtectedRoutes = () => {
   const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
   const router = useRouter();
-
   console.log(loggedInInfo.isLoggedIn);
-  if (loggedInInfo.isLoggedIn) {
-    return { children };
-  } else {
-    return router.push("/login");
-  }
+  useEffect(() => {
+    loggedInInfo.isLoggedIn ? { Children } : router.push("/login");
+  }, []);
 };
 
 export default ProtectedRoutes;
