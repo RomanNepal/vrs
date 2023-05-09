@@ -1,5 +1,15 @@
-import { Box, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
+import Link from "next/link";
 import React from "react";
+import { CgChevronDown } from "react-icons/cg";
 
 const DashBar = (props) => {
   return (
@@ -19,23 +29,43 @@ const DashBar = (props) => {
           paddingTop={"2"}
           paddingBottom={"2"}
           borderRadius={"lg"}
-          bgColor={props.activeIndex===0?"#E53E3E"}
+          bgColor={props.activeIndex === 0 ? "#E53E3E" : ""}
           textColor={"white"}
         >
           {" "}
-          <Link>Profile</Link>
+          <Link href={"/"}>Profile</Link>
         </Box>
         <Box paddingLeft={"2"}>
-          <Link>Vehicle</Link>
+          <Menu>
+            <MenuButton display={"flex"}>Vehicle</MenuButton>
+            <MenuList>
+              {" "}
+              <Link href="/dashboard/addvehicle">
+                <MenuItem>Add</MenuItem>
+              </Link>
+              <MenuItem>Show All</MenuItem>
+            </MenuList>
+          </Menu>
+
+          <Menu>
+            <MenuButton display={"flex"}>Brand</MenuButton>
+            <MenuList>
+              {" "}
+              <Link href="/dashboard/addbrand">
+                <MenuItem>Add Brand</MenuItem>
+              </Link>
+              <MenuItem>Show All Brands</MenuItem>
+            </MenuList>
+          </Menu>
         </Box>
         <Box paddingLeft={"2"}>
-          <Link>Category</Link>
+          <Link href={"/"}>Category</Link>
         </Box>
         <Box paddingLeft={"2"}>
-          <Link>SubCategory</Link>
+          <Link href={"/"}>SubCategory</Link>
         </Box>
         <Box paddingLeft={"2"}>
-          <Link>Bookings</Link>
+          <Link href={"/"}>Bookings</Link>
         </Box>
       </Box>
     </>
