@@ -23,11 +23,13 @@ const AddBrand = () => {
     logo: "",
   });
   const formRef = useRef(null);
+  const formRef1 = useRef(null);
   const toast = useToast();
   const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
   const uploadBrandLogo = async (e) => {
     e.preventDefault();
-    console.log("e is", e);
+    console.log("e is", e.target);
+    // setFormData({ title: e.target });
     let data = new FormData(e.target);
     try {
       let response = await axios.post(`${url}/upload/image`, data, {
@@ -35,7 +37,7 @@ const AddBrand = () => {
       });
       if (response) {
         console.log(response.data.data.image[0]);
-        setFormData({ ...formData, title: response.data.data.image[0] });
+        setFormData({ ...formData, logo: response.data.data.image[0] });
         toast({
           title: `${response.data.msg}`,
           description: `${formData.photo}`,
@@ -48,17 +50,25 @@ const AddBrand = () => {
       console.log(err);
     }
   };
-
+  const handleChange = (e) => {
+    e.preventDefault();
+    setFormData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let data = new FormData(e.target);
-
+    // let data = new FormData(e.target);
+    //start from here ok
+    console.log(formData);
     try {
-      let response = await axios.post(`${url}/vehicle/brand/add`, data, {
+      let response = await axios.post(`${url}/vehicle/brand/add`, formData, {
         headers: { Authorization: `Bearer ${loggedInInfo.token}` },
       });
       if (response) {
         formRef.current?.reset();
+        formRef1.current?.reset();
+        setFormData({ title: "", description: "", logo: "" });
         toast({
           title: `${response.data}`,
           description: "Brand Added Successfully",
@@ -76,7 +86,7 @@ const AddBrand = () => {
     <>
       <Navbar />
       <Box display={"flex"}>
-        <DashBar />
+        <DashBar activeIndex={2} />
         <Box
           display={"flex"}
           width={"85%"}
@@ -92,12 +102,24 @@ const AddBrand = () => {
             <Stack gap={"3"}>
               <FormControl isRequired>
                 <FormLabel>Brand Name</FormLabel>
-                <Input name="title" width={"40%"} type={"text"}></Input>
+                <Input
+                  name="title"
+                  width={"40%"}
+                  type={"text"}
+                  onChange={handleChange}
+                  value={formData.title}
+                ></Input>
               </FormControl>
 
               <FormControl isRequired>
                 <FormLabel>Description</FormLabel>
-                <Input name="description" width={"40%"} type={"text"}></Input>
+                <Input
+                  name="description"
+                  width={"40%"}
+                  type={"text"}
+                  onChange={handleChange}
+                  value={formData.description}
+                ></Input>
               </FormControl>
 
               <Input
@@ -112,7 +134,7 @@ const AddBrand = () => {
             </Stack>
           </form>
 
-          <form onSubmit={uploadBrandLogo} id="form1">
+          <form onSubmit={uploadBrandLogo} ref={formRef1}>
             <FormControl isRequired>
               <FormLabel>Brand Logo</FormLabel>
               <Input name="images" width={"40%"} type={"file"}></Input>
