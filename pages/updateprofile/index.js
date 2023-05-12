@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import {
   Box,
@@ -17,6 +17,7 @@ import { CgProfile } from "react-icons/cg";
 import { MdOutlineMail } from "react-icons/md";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { AuthContext } from "../../components/Context/authContext";
 const UpdateProfilePicture = dynamic(() => import("./updateProfilePicture"));
 const Navbar = dynamic(() => import("../../components/Navbar"), { ssr: false });
 
@@ -24,12 +25,13 @@ const UpdateProfile = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [completedStep, setCompletedStep] = useState(null);
   const [province, setProvince] = useState([]);
+  const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
   useEffect(() => {
     const getDetail = async () => {
       try {
         let result = await axios.get(
           "https://www.nepallocation.com.np/api/v1/province/list",
-          { headers: { Authorization: `Bearer zVDeHYW-c7c5L-fyz11d6ySr` } }
+          { headers: { Authorization: `Bearer ${loggedInInfo.token}` } }
         );
         console.log("result is:", result);
         setProvince(result.data.data.data);

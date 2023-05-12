@@ -16,18 +16,25 @@ import { MdLocationPin } from "react-icons/md";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { FaCar } from "react-icons/fa";
 import CarCard from "../components/CarCard";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import dynamic from "next/dynamic";
 const Navbar = dynamic(() => import("../components/Navbar"), { ssr: false });
 import Footer from "../components/Footer";
+import { AuthContext } from "../components/Context/authContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  // useEffect(() => {
-  //   navigator.geolocation.getCurrentPosition(function (position) {
-  //     console.log(position);
-  //   });
-  // }, []);
+  const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
+  useEffect(() => {
+    if (loggedInInfo.isLoggedIn) {
+      const getUserInfo = async () => {
+        
+      };
+      getUserInfo();
+    } else {
+      console.log("not logged in");
+    }
+  }, []);
   return (
     <>
       <Head>

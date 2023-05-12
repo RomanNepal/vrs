@@ -39,7 +39,7 @@ const Login = () => {
         });
 
         setLoggedIn(true, response.data.data.token);
-        router.push("/updateprofile");
+        router.replace("/updateprofile");
       } else {
         let response = await axios.post(`${url}/auth/send-otp`, {
           phone: phone,

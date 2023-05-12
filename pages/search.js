@@ -115,9 +115,9 @@ const Search = () => {
           headers: { Authorization: `Bearer ${loggedInInfo.token}` },
         });
         if (response) {
-          let hello = Array.from(response.data.data.result);
+          // let hello = Array.from(response.data.data.result);
           // console.log(response.data.data.result.toArray());
-          setVehicles(hello);
+          setVehicles(response.data.data.result);
         }
       } catch (err) {
         console.log(err);
@@ -188,7 +188,6 @@ const Search = () => {
                     position={"relative"}
                     overflow={"hidden"}
                   >
-                    {console.log("item is", item)}
                     <Image
                       src={item.thumbnail}
                       // height={"100"}
@@ -202,13 +201,15 @@ const Search = () => {
                       fontWeight={"bold"}
                       fontSize={"lg"}
                       textColor={"gray.600"}
-                    ></Text>
+                    >
+                      {item.title}
+                    </Text>
                     <Text
                       fontSize={"sm"}
                       fontWeight={"medium"}
                       textColor={"gray.600"}
                     >
-                      Company: {item.company}
+                      Brand: {item.brand.title}
                     </Text>
                     <Text
                       fontSize={"sm"}
@@ -217,45 +218,45 @@ const Search = () => {
                     >
                       Model: {item.model}
                     </Text>
+                    {/* <Text
+                      fontSize={"sm"}
+                      fontWeight={"medium"}
+                      textColor={"gray.600"}
+                    >
+                      Engine: {}
+                    </Text> */}
                     <Text
                       fontSize={"sm"}
                       fontWeight={"medium"}
                       textColor={"gray.600"}
                     >
-                      Engine: {item.engine}
+                      Category: {item.category.title}
                     </Text>
-                    <Text
+                    {/* <Text
                       fontSize={"sm"}
                       fontWeight={"medium"}
                       textColor={"gray.600"}
                     >
-                      Category: {item.category}
-                    </Text>
-                    <Text
-                      fontSize={"sm"}
-                      fontWeight={"medium"}
-                      textColor={"gray.600"}
-                    >
-                      Seller: {item.seller}
-                    </Text>
+                      Seller: {}
+                    </Text> */}
                     <Text
                       fontSize={"medium"}
                       fontWeight={"medium"}
-                      textColor={"gray.600"}
+                      textColor={"red.600"}
                     >
-                      <b>Price: {item.price}</b>
+                      <b>Rate: {item.rate}</b>
                     </Text>
 
                     <Button
-                      colorScheme={
-                        item.status === "available"
-                          ? "green"
-                          : item.status === "reserved"
-                          ? "yellow"
-                          : item.status === "booked"
-                          ? "red"
-                          : ""
-                      }
+                      // colorScheme={
+                      //   item.status === "available"
+                      //     ? "green"
+                      //     : item.status === "reserved"
+                      //     ? "yellow"
+                      //     : item.status === "booked"
+                      //     ? "red"
+                      //     : ""
+                      // }
                       padding={"1"}
                       size={"smaller"}
                       fontSize={"x-small"}
