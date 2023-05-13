@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -23,14 +23,86 @@ import {
   Thead,
   Tr,
   Th,
+  useToast,
 } from "@chakra-ui/react";
 // for commit
 
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { url } from "../../components/Constants";
+import { AuthContext } from "../../components/Context/authContext";
 const Navbar = dynamic(() => import("../../components/Navbar"), { ssr: false });
 const stars = [1, 2, 3, 4, 5];
-const images = ["/brezza.jpg", "/fortuner.jpg", "/scorpio.jpg", "/verna.jpg"];
+// const images = ["/brezza.jpg", "/fortuner.jpg", "/scorpio.jpg", "/verna.jpg"];
 const Vehicle = () => {
+  const [vehicle, setVehicle] = useState();
+  const [images, setImages] = useState([]);
+  const [booked, setBooked] = useState(false);
+  const router = useRouter();
+  const id = router.query.vehicle;
+  const [formData, setFormData] = useState({
+    vehicleId: id,
+    startDate: "",
+    endDate: "",
+  });
+  const data = { id: id };
+  console.log(id);
+  const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
+  useEffect(() => {
+    const getVehicle = async () => {
+      try {
+        let result = await axios.post(`${url}/vehicle/vehicle`, data, {
+          headers: { Authorization: `Bearer ${loggedInInfo.token}` },
+        });
+        console.log(result.data.data.result);
+        if (result.data.data.result.isBooked == true) {
+          setBooked(true);
+        }
+        setVehicle(result.data.data.result);
+        setFormData((prev) => {
+          return { ...prev, vehicleId: id };
+        });
+        setImages(result.data.data.result.images);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getVehicle();
+  }, []);
+
+  const handleChange = (e) => {
+    setFormData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
+
+  const toast = useToast();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // 12:00:00.000Z
+    let fd = { ...formData };
+    fd.startDate = `${fd.startDate}T12:00:00.000Z`;
+    fd.endDate = `${fd.endDate}T12:00:00.000Z`;
+    console.log(fd);
+    try {
+      let result = await axios.post(`${url}/booking`, fd, {
+        headers: { Authorization: `Bearer ${loggedInInfo.token}` },
+      });
+      console.log(result.data.data);
+      toast({
+        title: `${result.data.data.msg}`,
+        description: `${""}`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const [current, setCurrent] = useState(0);
   const settings = {
     appendDots: (dots) => (
@@ -112,9 +184,9 @@ const Vehicle = () => {
           </Box>
           <Box p={"10"} width={"50%"} fontFamily={"Inter"}>
             <Text fontSize={"3xl"} fontWeight={"bold"}>
-              {"Jeep Wrangler Rubicon"}
+              {vehicle?.title}
             </Text>
-            <Box display={"flex"} alignItems={"center"} gap={"1"}>
+            {/* <Box display={"flex"} alignItems={"center"} gap={"1"}>
               <Text fontSize={"sm"} textColor={"gray.400"}>
                 User Reviews:
               </Text>
@@ -128,7 +200,7 @@ const Vehicle = () => {
                   );
                 })}
               </Box>
-            </Box>
+            </Box> */}
             <br></br>
 
             <Text
@@ -140,26 +212,23 @@ const Vehicle = () => {
             </Text>
 
             <Text fontWeight={"semibold"} fontSize={"lg"}>
-              This is the short description for the Jeep Wrangler Rubicon This
-              is the short description for the Jeep Wrangler Rubicon This is the
-              short description for the Jeep Wrangler Rubicon This is the short
-              description for the Jeep Wrangler Rubicon.
+              {vehicle?.description}
             </Text>
 
             <br></br>
-            <Text textColor={"gray.400"} fontWeight={"semibold"}>
+            {/* <Text textColor={"gray.400"} fontWeight={"semibold"}>
               Seller Description
-            </Text>
-            <Text fontWeight={"semibold"} fontSize={"lg"}>
+            </Text> */}
+            {/* <Text fontWeight={"semibold"} fontSize={"lg"}>
               Nepal Rental Enterprises
-            </Text>
+            </Text> */}
             <br></br>
             <Text
               fontFamily={"Poppins"}
               fontWeight={"semibold"}
               textColor={"#FF497C"}
             >
-              Price:
+              Rate:
             </Text>
             <Box
               display={"flex"}
@@ -168,7 +237,7 @@ const Vehicle = () => {
               gap={"2"}
             >
               <Text fontWeight={"bold"} fontSize={"4xl"} textColor={"red.500"}>
-                {"Rs. 2000/day"}
+                {vehicle?.rate}
               </Text>
             </Box>
             <br></br>
@@ -178,7 +247,7 @@ const Vehicle = () => {
             <br></br>
             <form>
               <Box display={"flex"} gap={"4"}>
-                <NumberInput
+                {/* <NumberInput
                   name="quantity"
                   defaultValue={1}
                   min={1}
@@ -189,15 +258,28 @@ const Vehicle = () => {
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
                   </NumberInputStepper>
-                </NumberInput>
+                </NumberInput> */}
                 <Input
-                  as={Button}
+                  type={"date"}
+                  name="startDate"
+                  value={formData.startDate}
+                  onChange={handleChange}
+                ></Input>
+                <Input
+                  type={"date"}
+                  onChange={handleChange}
+                  name="endDate"
+                  value={formData.endDate}
+                ></Input>
+                <Button
+                  isDisabled={booked ? true : false}
                   variant={"filled"}
                   bgColor={"#FF497C"}
                   textColor={"white"}
+                  onClick={handleSubmit}
                 >
-                  Add To Cart
-                </Input>
+                  Book Now
+                </Button>
                 <Input as={Button} width={"16"} p={"0"}>
                   <BiHeart />
                 </Input>

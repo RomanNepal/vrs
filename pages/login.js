@@ -25,21 +25,22 @@ const Login = () => {
 
   useEffect(() => {
     if (loggedInInfo.isLoggedIn) {
-      router.back();
+      // router.push("/");
     } else {
       console.log("not logged in");
     }
   }, []);
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       if (show) {
         let response = await axios.post(`${url}/auth/verify-otp`, {
           phone: phone,
           otp: otp,
         });
-
+        console.log(response.data.data);
         setLoggedIn(true, response.data.data.token);
-        router.replace("/updateprofile");
+        router.push("/updateprofile");
       } else {
         let response = await axios.post(`${url}/auth/send-otp`, {
           phone: phone,

@@ -176,7 +176,7 @@ const Search = () => {
                 <Box
                   as={Link}
                   key={index}
-                  href={"/vehicle/jeep"}
+                  href={`/vehicle/${item.id}`}
                   paddingRight={"4"}
                   display={"flex"}
                   alignItems={"center"}

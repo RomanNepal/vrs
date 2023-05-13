@@ -5,7 +5,7 @@ import axios from "axios";
 import { Router, useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import DashBar from "../../components/DashBar";
-import { Box } from "@chakra-ui/react";
+import { Box, Center } from "@chakra-ui/react";
 const Navbar = dynamic(() => import("../../components/Navbar"), { ssr: false });
 
 const Dashboard = () => {
@@ -35,6 +35,23 @@ const Dashboard = () => {
       <Navbar activeIndex={0} />
       <Box display={"flex"}>
         <DashBar activeIndex={0} />
+
+        <Box
+          padding={"4"}
+          width={"100%"}
+          border={"1px"}
+          display={"flex"}
+          justifyContent={"center"}
+        >
+          <Box
+            border={"1px"}
+            height={"100"}
+            width={"100"}
+            borderRadius={"full"}
+          >
+            Your Profile
+          </Box>
+        </Box>
       </Box>
     </>
   );
