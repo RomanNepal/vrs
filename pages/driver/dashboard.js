@@ -5,30 +5,21 @@ import axios from "axios";
 import { Router, useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import DashBar from "../../components/DashBar";
-import { Box, Center, Table, Td, Text, Th, Tr } from "@chakra-ui/react";
-import Image from "next/image";
-import Footer from "../../components/Footer";
+import { Box, Center, Text } from "@chakra-ui/react";
 const Navbar = dynamic(() => import("../../components/Navbar"), { ssr: false });
 
 const Dashboard = () => {
-  const [profile, setProfile] = useState();
   const router = useRouter();
-  const {
-    userLoggedInInfo,
-    setUserLoggedIn,
-    driverLoggedInInfo,
-    setDriverLoggedIn,
-  } = useContext(AuthContext);
-
+  const { driverLoggedInInfo, setDriverLoggedIn } = useContext(AuthContext);
+  const [profile, setProfile] = useState();
   useEffect(() => {
     const getDetails = async () => {
       try {
-        let response = await axios.get(`${url}/user/profile`, {
+        let response = await axios.get(`${url}/vehicle/listall/vehicle`, {
           headers: {
-            Authorization: `Bearer ${userLoggedInInfo.token}`,
+            Authorization: `Bearer ${driverLoggedInInfo.driverToken}`,
           },
         });
-        setProfile(response.data.data.result);
         console.log(response);
       } catch (err) {
         if (err.response.status === 401) {
@@ -51,24 +42,12 @@ const Dashboard = () => {
           padding={"4"}
           paddingLeft={"10"}
           width={"100%"}
-          display={"flex"}
-          flexDir={"column"}
-          gap={"5"}
         >
-          <Text>
-            <b>Full Name:</b> {profile?.fullName}
-          </Text>
-
-          <Text>
-            <b>Gender:</b> {profile?.gender}
-          </Text>
-          <Text>
-            <b>Province:</b> {profile?.address?.province}
-          </Text>
-          <Text>
-            <b>District:</b> {profile?.address?.district}
-          </Text>
-          {/* <Text>Street: {profile?.address?.street}</Text> */}
+          <Text>Full Name: Roman Nepal</Text>
+          <Text>Gender:male</Text>
+          <Text>Province: Province 1</Text>
+          <Text>District: Sunsari</Text>
+          <Text>Street: Chakraghatti</Text>
         </Box>
       </Box>
     </>

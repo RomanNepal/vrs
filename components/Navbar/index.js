@@ -2,10 +2,18 @@ import {
   Avatar,
   Box,
   Button,
+  Input,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
   Spacer,
   Text,
 } from "@chakra-ui/react";
@@ -16,14 +24,42 @@ import Link from "next/link";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../Context/authContext";
 import { useRouter } from "next/router";
+import axios from "axios";
+import { url } from "../Constants";
 const Navbar = ({ activeIndex }) => {
+  const [searchString, setString] = useState("");
+  const [opened, setOpened] = useState(false);
   const router = useRouter();
-  const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
-  const isLoggedIn = loggedInInfo.isLoggedIn;
+  const {
+    userLoggedInInfo,
+    setUserLoggedIn,
+    driverLoggedInInfo,
+    setDriverLoggedIn,
+    admin,
+    setAdmin,
+  } = useContext(AuthContext);
+
+  const isLoggedIn =
+    userLoggedInInfo.isLoggedIn || driverLoggedInInfo.isLoggedIn;
   const handleLogout = () => {
-    setLoggedIn(false, "");
+    setUserLoggedIn(false, "");
+    setDriverLoggedIn(false, "");
+    if (admin) {
+      setAdmin(false);
+    }
+
     router.push("/");
   };
+  const handleChange = (e) => {
+    setString(e.target.value);
+    console.log(e.target.value);
+  };
+  const handleSubmit = (e) => {
+    console.log(searchString);
+    router.replace(`/search?query=${searchString}`);
+    setString("");
+  };
+
   // const [activeIndex, setActive] = useState(0);
   return (
     <Box position={"sticky"} top={"0"} zIndex={"100"}>
@@ -56,7 +92,7 @@ const Navbar = ({ activeIndex }) => {
         fontWeight={"medium"}
       >
         <Box>
-          <Image src={"/logo.jpg"} width={"200"} height={"200"}></Image>
+          <Image src={"/logo3.jpg"} width={"200"} height={"200"}></Image>
         </Box>
         <Spacer />
         <Box display={"flex"} gap={"12"} alignItems={"center"}>
@@ -84,22 +120,51 @@ const Navbar = ({ activeIndex }) => {
             borderBottomColor={"red"}
             paddingBottom={"1"}
           >
-            <Link href={"/"}>About Us</Link>
+            <Link href={"/vehiclesnearme"}>Vehicles Near Me</Link>
           </Box>
-          <Box
+          {/* <Box
             borderBottom={activeIndex == 3 ? "2px" : "0px"}
             borderBottomColor={"red"}
             paddingBottom={"1"}
           >
             <Link href={"/"}>Vehicles</Link>
-          </Box>
+          </Box> */}
 
           <Box
             borderBottom={activeIndex == 4 ? "2px" : "0px"}
             borderBottomColor={"red"}
             paddingBottom={"1"}
           >
-            <Link href="/search">Search</Link>
+            {/* <Menu>
+              <MenuButton onClick={() => setOpened(!opened)}>Search</MenuButton>
+              <MenuList>
+                <MenuItem>
+                  <Input
+                    onClick={() => setOpened(true)}
+                    onChange={handleChange}
+                  ></Input>
+                </MenuItem>
+                <MenuItem>
+                  <Button onClick={handleSubmit}>Submit</Button>
+                </MenuItem>
+              </MenuList>
+            </Menu> */}
+
+            <Popover>
+              <PopoverTrigger>
+                <Button>Search</Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverArrow />
+                <PopoverCloseButton />
+
+                <PopoverBody>
+                  <Input onChange={handleChange} width={"90%"}></Input>
+                  <br></br>
+                  <Button onClick={handleSubmit}>Submit</Button>{" "}
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
           </Box>
           {isLoggedIn ? (
             <Menu>
@@ -108,11 +173,17 @@ const Navbar = ({ activeIndex }) => {
                 <Avatar size={"sm"} />
               </MenuButton>
               <MenuList>
-                <Link href={"/dashboard"}>
+                <Link
+                  href={
+                    userLoggedInInfo.isLoggedIn
+                      ? "/dashboard"
+                      : "/driver/dashboard"
+                  }
+                >
                   {" "}
                   <MenuItem>Dashboard</MenuItem>
                 </Link>
-                <MenuItem>Roman Nepal</MenuItem>
+                {/* <MenuItem>{userLoggedInInfo.userName}</MenuItem> */}
                 <MenuItem>
                   <Button variant={"unstyled"} onClick={handleLogout}>
                     {" "}
@@ -124,14 +195,27 @@ const Navbar = ({ activeIndex }) => {
               </MenuList>
             </Menu>
           ) : (
-            <Button variant={"outline"} colorScheme="red">
-              <Link href={"/login"}>Login</Link>
-            </Button>
+            <Menu>
+              <MenuButton as={Button} variant={"outline"}>
+                Login
+              </MenuButton>
+              <MenuList>
+                <Link href={"/login"}>
+                  {" "}
+                  <MenuItem>User Login</MenuItem>
+                </Link>
+                <Link href={"/driver/login"}>
+                  {" "}
+                  <MenuItem>Driver Login</MenuItem>
+                </Link>
+              </MenuList>
+            </Menu>
+            // <Menu>
+            //   <Button variant={"outline"} colorScheme="red">
+            //     <Link href={"/login"}>Login</Link>
+            //   </Button>
+            // </Menu>
           )}
-
-          <Button colorScheme="red">
-            <Link href={"/"}>Book Now</Link>
-          </Button>
         </Box>
       </Box>
     </Box>

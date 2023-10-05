@@ -8,6 +8,8 @@ import Link from "next/link";
 import axios from "axios";
 import { url } from "../components/Constants";
 import { AuthContext } from "../components/Context/authContext";
+import { useRouter } from "next/router";
+import Footer from "../components/Footer";
 const arr = [
   "Cars",
   "Bikes",
@@ -106,25 +108,67 @@ const cars = [
 ];
 
 const Search = () => {
-  const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
+  const {
+    userLoggedInInfo,
+    setUserLoggedIn,
+    driverLoggedInInfo,
+    setDriverLoggedIn,
+  } = useContext(AuthContext);
   const [vehicles, setVehicles] = useState();
+  const router = useRouter();
+  const query = router.query.query;
+  console.log(query);
   useEffect(() => {
-    const getResult = async () => {
-      try {
-        let response = await axios.get(`${url}/vehicle/listall/vehicle`, {
-          headers: { Authorization: `Bearer ${loggedInInfo.token}` },
-        });
-        if (response) {
-          // let hello = Array.from(response.data.data.result);
-          // console.log(response.data.data.result.toArray());
+    if (query != "" || typeof query != undefined) {
+      const getResult = async () => {
+        try {
+          let response = await axios.post(
+            `${url}/vehicle/search`,
+            {
+              searchString: query,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${
+                  userLoggedInInfo.token
+                    ? userLoggedInInfo.token
+                    : driverLoggedInInfo.driverToken
+                }`,
+              },
+            }
+          );
+          console.log(response);
           setVehicles(response.data.data.result);
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getResult();
-  }, []);
+      };
+      getResult();
+    } else {
+      const getResult = async () => {
+        try {
+          let response = await axios.get(
+            `${url}/vehicle/listall/vehicle`,
+
+            {
+              headers: {
+                Authorization: `Bearer ${
+                  userLoggedInInfo.token
+                    ? userLoggedInInfo.token
+                    : driverLoggedInInfo.driverToken
+                }`,
+              },
+            }
+          );
+          console.log(response);
+          setVehicles(response.data.data.result);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      getResult();
+    }
+  }, [query]);
   return (
     <>
       <Navbar />
@@ -166,7 +210,7 @@ const Search = () => {
         <Divider height={"100%"} ml={"4"} mr={"4"} orientation="vertical" />
         <Box width={"50%"}>
           <Text fontSize={"xl"} fontWeight={"bold"}>
-            Search Results:
+            Search Results for: {query}
           </Text>
           <br></br>
           {console.log(vehicles)}
@@ -209,7 +253,7 @@ const Search = () => {
                       fontWeight={"medium"}
                       textColor={"gray.600"}
                     >
-                      Brand: {item.brand.title}
+                      {/* Brand: {item.brand.title} */}
                     </Text>
                     <Text
                       fontSize={"sm"}
@@ -230,7 +274,7 @@ const Search = () => {
                       fontWeight={"medium"}
                       textColor={"gray.600"}
                     >
-                      Category: {item.category.title}
+                      {/* Category: {item.category.title} */}
                     </Text>
                     {/* <Text
                       fontSize={"sm"}
@@ -260,7 +304,10 @@ const Search = () => {
                       padding={"1"}
                       size={"smaller"}
                       fontSize={"x-small"}
-                    ></Button>
+                      colorScheme={item.isBooked ? "red" : "green"}
+                    >
+                      {item.isBooked ? "Booked" : "Available"}
+                    </Button>
                   </Box>
                 </Box>
                 <Divider marginTop={"4"} marginBottom={"4"} />
@@ -270,6 +317,7 @@ const Search = () => {
         </Box>
         <Box width={"25%"}></Box>
       </Box>
+      <Footer />
     </>
   );
 };

@@ -16,6 +16,7 @@ import DashBar from "../../components/DashBar";
 import { url } from "../../components/Constants";
 import dynamic from "next/dynamic";
 import { AuthContext } from "../../components/Context/authContext";
+import Footer from "../../components/Footer";
 const Navbar = dynamic(() => import("../../components/Navbar"), { ssr: false });
 const AddCategory = () => {
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ const AddCategory = () => {
   const formRef = useRef(null);
   const formRef1 = useRef(null);
   const toast = useToast();
-  const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
+  const { userLoggedInInfo, setUserLoggedIn } = useContext(AuthContext);
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     const getCategory = async () => {
@@ -62,7 +63,7 @@ const AddCategory = () => {
         `${url}/vehicle/subcategory/add`,
         formData,
         {
-          headers: { Authorization: `Bearer ${loggedInInfo.token}` },
+          headers: { Authorization: `Bearer ${userLoggedInInfo.token}` },
         }
       );
       if (response) {
@@ -146,6 +147,7 @@ const AddCategory = () => {
           </form>
         </Box>
       </Box>
+      <Footer />
     </>
   );
 };

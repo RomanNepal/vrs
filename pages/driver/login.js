@@ -7,31 +7,25 @@ import {
   Toast,
   useToast,
 } from "@chakra-ui/react";
-import { decode } from "jsonwebtoken";
 import dynamic from "next/dynamic";
 import React, { useContext, useEffect, useState } from "react";
 // import Navbar from "../components/Navbar";
-const Navbar = dynamic(() => import("../components/Navbar"), { ssr: false });
+const Navbar = dynamic(() => import("../../components/Navbar"), { ssr: false });
 import axios from "axios";
 import Router, { useRouter } from "next/router";
-import { url } from "../components/Constants";
-import { AuthContext } from "../components/Context/authContext";
+import { url } from "../../components/Constants";
+import { AuthContext } from "../../components/Context/authContext";
 const Login = () => {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [show, setShow] = useState(false);
   const router = useRouter();
   const toast = useToast();
-  const { userLoggedInInfo, setUserLoggedIn, setAdmin } =
-    useContext(AuthContext);
-  const [routeChanged, setRouteChanged] = useState(false);
+  const { driverLoggedInInfo, setDriverLoggedIn } = useContext(AuthContext);
+
   useEffect(() => {
-    console.log("useeffect called");
-    if (userLoggedInInfo.isLoggedIn) {
-      console.log("logged in");
-      if (!routeChanged) {
-        router.replace("/");
-      }
+    if (driverLoggedInInfo.isLoggedIn) {
+      // router.push("/");
     } else {
       console.log("not logged in");
     }
@@ -40,22 +34,15 @@ const Login = () => {
     e.preventDefault();
     try {
       if (show) {
-        let response = await axios.post(`${url}/auth/verify-otp`, {
+        let response = await axios.post(`${url}/driver/verify-otp`, {
           phone: phone,
           otp: otp,
         });
-        // console.log("response.data.data.token is: ", response.data.data.token);
-        setUserLoggedIn(true, response.data.data.token.toString());
-
-        let decoded = decode(response.data.data.token);
-        if (decoded.role === "admin") {
-          setAdmin(true);
-        }
-        if (response.data.data.isProfileUpdated != true) {
-          console.log("response.data.data: ", response.data.data);
-          setRouteChanged(true);
-          router.push("/updateprofile");
-        } else {
+        console.log(response.data.data.token);
+        setDriverLoggedIn(true, response.data.data.token);
+        if (response.data.data.isProfileUpdated != true)
+          router.push("/driver/updateprofile");
+        else {
           toast({
             title: `${response.data.data.msg}`,
             description: "",
@@ -69,12 +56,13 @@ const Login = () => {
         let response = await axios.post(`${url}/auth/send-otp`, {
           phone: phone,
         });
-
+        console.log(response.data);
         if (response) {
           setShow(true);
         }
       }
     } catch (err) {
+      console.log(err);
       toast({
         title: `Error Logging In`,
         description: "",

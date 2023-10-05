@@ -32,6 +32,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { url } from "../../components/Constants";
 import { AuthContext } from "../../components/Context/authContext";
+import Footer from "../../components/Footer";
 const Navbar = dynamic(() => import("../../components/Navbar"), { ssr: false });
 const stars = [1, 2, 3, 4, 5];
 // const images = ["/brezza.jpg", "/fortuner.jpg", "/scorpio.jpg", "/verna.jpg"];
@@ -48,12 +49,12 @@ const Vehicle = () => {
   });
   const data = { id: id };
   console.log(id);
-  const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
+  const { userLoggedInInfo, setUserLoggedIn } = useContext(AuthContext);
   useEffect(() => {
     const getVehicle = async () => {
       try {
         let result = await axios.post(`${url}/vehicle/vehicle`, data, {
-          headers: { Authorization: `Bearer ${loggedInInfo.token}` },
+          headers: { Authorization: `Bearer ${userLoggedInInfo.token}` },
         });
         console.log(result.data.data.result);
         if (result.data.data.result.isBooked == true) {
@@ -88,9 +89,14 @@ const Vehicle = () => {
     console.log(fd);
     try {
       let result = await axios.post(`${url}/booking`, fd, {
-        headers: { Authorization: `Bearer ${loggedInInfo.token}` },
+        headers: { Authorization: `Bearer ${userLoggedInInfo.token}` },
       });
       console.log(result.data.data);
+      setFormData({
+        vehicleId: id,
+        startDate: "",
+        endDate: "",
+      });
       toast({
         title: `${result.data.data.msg}`,
         description: `${""}`,
@@ -242,7 +248,7 @@ const Vehicle = () => {
             </Box>
             <br></br>
             <Text textColor={"gray.400"} fontWeight={"semibold"}>
-              Select Quantity
+              Select Start & End Date
             </Text>
             <br></br>
             <form>
@@ -271,23 +277,27 @@ const Vehicle = () => {
                   name="endDate"
                   value={formData.endDate}
                 ></Input>
-                <Button
-                  isDisabled={booked ? true : false}
-                  variant={"filled"}
-                  bgColor={"#FF497C"}
-                  textColor={"white"}
-                  onClick={handleSubmit}
-                >
-                  Book Now
-                </Button>
-                <Input as={Button} width={"16"} p={"0"}>
+
+                {/* <Input as={Button} width={"16"} p={"0"}>
                   <BiHeart />
-                </Input>
+                </Input> */}
               </Box>
+              <br></br>
+              <Button
+                isDisabled={booked ? true : false}
+                variant={"filled"}
+                bgColor={"#FF497C"}
+                textColor={"white"}
+                onClick={handleSubmit}
+                width={"100%"}
+              >
+                Book Now
+              </Button>
             </form>
           </Box>
         </Box>
       </Box>
+      <Footer />
     </>
   );
 };

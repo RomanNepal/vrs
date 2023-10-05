@@ -15,6 +15,7 @@ import DashBar from "../../components/DashBar";
 import { url } from "../../components/Constants";
 import dynamic from "next/dynamic";
 import { AuthContext } from "../../components/Context/authContext";
+import Footer from "../../components/Footer";
 const Navbar = dynamic(() => import("../../components/Navbar"), { ssr: false });
 const AddCategory = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +26,9 @@ const AddCategory = () => {
   const formRef = useRef(null);
   const formRef1 = useRef(null);
   const toast = useToast();
-  const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
+  const { userLoggedInInfo, setUserLoggedInInfo, admin } =
+    useContext(AuthContext);
+
   const uploadCategoryLogo = async (e) => {
     e.preventDefault();
     console.log("e is", e.target);
@@ -63,7 +66,7 @@ const AddCategory = () => {
     console.log(formData);
     try {
       let response = await axios.post(`${url}/vehicle/category/add`, formData, {
-        headers: { Authorization: `Bearer ${loggedInInfo.token}` },
+        headers: { Authorization: `Bearer ${userLoggedInInfo.token}` },
       });
       if (response) {
         formRef.current?.reset();
@@ -152,6 +155,7 @@ const AddCategory = () => {
           </form>
         </Box>
       </Box>
+      <Footer />
     </>
   );
 };

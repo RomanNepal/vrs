@@ -19,6 +19,8 @@ import DashBar from "../../components/DashBar";
 import { url } from "../../components/Constants";
 import dynamic from "next/dynamic";
 import { AuthContext } from "../../components/Context/authContext";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import Footer from "../../components/Footer";
 const Navbar = dynamic(() => import("../../components/Navbar"), { ssr: false });
 const AddVehicle = () => {
   const [category, setCategory] = useState([]);
@@ -38,7 +40,7 @@ const AddVehicle = () => {
     description: "",
     rentGuidelines: "",
     rate: "",
-    pickupAddress: "",
+    pickupAddress: [],
     driveTrain: "",
     insurancePaperPhoto: "",
     features: {
@@ -66,7 +68,44 @@ const AddVehicle = () => {
   const formRef = useRef(null);
   const formRef1 = useRef(null);
   const toast = useToast();
-  const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
+  const { userLoggedInInfo, setUserLoggedIn } = useContext(AuthContext);
+  const center = {
+    lat: 27.7172,
+    lng: 85.324,
+  };
+  const [loc, setLoc] = useState({ lat: "", lng: "" });
+  const [cntr, setCenter] = useState(center);
+
+  //   google.maps.Geocoder();
+
+  const handleClick = async (e) => {
+    console.log(e);
+    console.log(e.latLng.lat());
+    let lat = e.latLng.lat();
+    let latStr = lat.toString();
+    console.log(typeof latStr);
+    let lng = e.latLng.lng();
+    let lngStr = lng.toString();
+    setLoc({ lat, lng });
+    setCenter({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+    setFormData((prev) => {
+      return {
+        ...prev,
+        pickupAddress: [`${latStr.toString()}`, `${lngStr.toString()}`],
+      };
+    });
+    toast({
+      title: `Location Selected`,
+      description: `Lat:${lat}, Long:${lng}`,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+  };
+
+  const onLoad = (marker) => {
+    console.log("marker: ", marker);
+  };
 
   useEffect(() => {
     const getResults = async () => {
@@ -238,9 +277,13 @@ const AddVehicle = () => {
     //start from here ok
     console.log(formData);
     const parseNumbers = (key, value) => {
-      if (key != "model" && !isNaN(value)) {
-        return Number(value);
+      if (key == "pickupAddress") {
+        return [`${value[0].toString()}`, `${value[1].toString()}`];
       }
+      if (key != "model") {
+        if (!isNaN(value)) return Number(value);
+      }
+
       if (value == "true") {
         return true;
       } else if (value == "false") {
@@ -248,15 +291,16 @@ const AddVehicle = () => {
       }
       return value;
     };
+
     const d = { name: "Roman", age: "20" };
     const parsedData = JSON.parse(JSON.stringify(formData), parseNumbers);
-    console.log(parsedData);
+    console.log("parsed data is: ", parsedData);
     try {
       let response = await axios.post(
         `${url}/vehicle/add/vehicle`,
         parsedData,
         {
-          headers: { Authorization: `Bearer ${loggedInInfo.token}` },
+          headers: { Authorization: `Bearer ${userLoggedInInfo.token}` },
         }
       );
       if (response) {
@@ -401,14 +445,23 @@ const AddVehicle = () => {
                 ></Input>
               </FormControl>
               <FormControl isRequired>
-                <FormLabel>Pickup Address</FormLabel>
-                <Input
-                  name="pickupAddress"
-                  width={"40%"}
-                  type={"text"}
-                  onChange={handleChange}
-                  value={formData.pickupAddress}
-                ></Input>
+                <FormLabel>Pickup Address (Select on map)</FormLabel>
+                <LoadScript googleMapsApiKey="">
+                  <GoogleMap
+                    mapContainerStyle={{ width: "90%", height: "400px" }}
+                    center={cntr}
+                    zoom={13}
+                    onClick={handleClick}
+                    options={{ zoomControl: { scroll: true } }}
+                  >
+                    {/* Child components, such as markers, info windows, etc. */}
+                    <Marker
+                      visible={true}
+                      onLoad={onLoad}
+                      position={loc}
+                    ></Marker>
+                  </GoogleMap>
+                </LoadScript>
               </FormControl>
               <FormControl isRequired>
                 <FormLabel>Drive Train</FormLabel>
@@ -809,6 +862,7 @@ const AddVehicle = () => {
           </form>
         </Box>
       </Box>
+      <Footer />
     </>
   );
 };

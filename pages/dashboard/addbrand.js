@@ -15,6 +15,7 @@ import DashBar from "../../components/DashBar";
 import { url } from "../../components/Constants";
 import dynamic from "next/dynamic";
 import { AuthContext } from "../../components/Context/authContext";
+import Footer from "../../components/Footer";
 const Navbar = dynamic(() => import("../../components/Navbar"), { ssr: false });
 const AddBrand = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ const AddBrand = () => {
   const formRef = useRef(null);
   const formRef1 = useRef(null);
   const toast = useToast();
-  const { loggedInInfo, setLoggedIn } = useContext(AuthContext);
+  const { userLoggedInInfo, setUserLoggedIn } = useContext(AuthContext);
   const uploadBrandLogo = async (e) => {
     e.preventDefault();
     console.log("e is", e.target);
@@ -63,7 +64,7 @@ const AddBrand = () => {
     console.log(formData);
     try {
       let response = await axios.post(`${url}/vehicle/brand/add`, formData, {
-        headers: { Authorization: `Bearer ${loggedInInfo.token}` },
+        headers: { Authorization: `Bearer ${userLoggedInInfo.token}` },
       });
       if (response) {
         formRef.current?.reset();
@@ -152,6 +153,7 @@ const AddBrand = () => {
           </form>
         </Box>
       </Box>
+      <Footer />
     </>
   );
 };
